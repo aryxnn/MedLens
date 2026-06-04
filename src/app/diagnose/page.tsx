@@ -36,7 +36,7 @@ function DiagnoseWorkspace() {
   const [patientAge, setPatientAge] = useState('30');
   const [patientGender, setPatientGender] = useState('Male');
   const [activeMeds, setActiveMeds] = useState('');
-  const [allergies, setAllergies] = useState('');
+  const [allergies, setAllergies] = useState('Aspirin');
   const [drugWarnings, setDrugWarnings] = useState<string[]>([]);
   const [preExisting, setPreExisting] = useState('');
   const [pregnancyStatus, setPregnancyStatus] = useState('No');
@@ -235,7 +235,7 @@ function DiagnoseWorkspace() {
                     style={{ width: '100%', background: 'var(--color-background-primary)', border: '0.5px solid var(--color-border-secondary)', borderRadius: 'var(--border-radius-md)', padding: '6px 10px', fontSize: '13px', color: '#fff' }}
                     value={allergies}
                     onChange={(e) => setAllergies(e.target.value)}
-                    placeholder="e.g. penicillin"
+                    placeholder="e.g. peanuts, codeine"
                   />
                 </div>
                 <div>

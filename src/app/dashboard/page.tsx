@@ -76,7 +76,7 @@ export default function DashboardPage() {
   const [weight, setWeight] = useState('');
   const [conditions, setConditions] = useState('');
   const [medications, setMedications] = useState('');
-  const [allergies, setAllergies] = useState('');
+  const [allergies, setAllergies] = useState('Aspirin');
   const [bloodType, setBloodType] = useState('O+');
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState('');
@@ -309,7 +309,7 @@ export default function DashboardPage() {
                 onChange={(e) => setAllergies(e.target.value)}
                 rows={2}
                 className="mt-1 w-full rounded-xl border border-slate-700 bg-slate-900/60 p-3 text-white focus:border-cyan-500 focus:outline-none"
-                placeholder="Penicillin, Peanuts, Aspirin..."
+                placeholder="Peanuts, Aspirin, Codeine..."
               />
             </div>
 
