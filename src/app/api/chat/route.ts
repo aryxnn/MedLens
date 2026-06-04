@@ -196,7 +196,7 @@ const reasoningNode = async (state: AgentStateType) => {
     console.error('LLM Reasoning Node error, falling back:', err.message);
     return {
       diagnosis: [{ 
-        condition: 'Clinical Evaluation Needed', 
+        condition: 'LLM is not responding', 
         reason: 'LLM failed to respond. Please schedule a human medical review.',
         treatment: 'Please rest and speak to a healthcare provider.'
       }],
