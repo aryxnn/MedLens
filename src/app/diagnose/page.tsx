@@ -36,7 +36,7 @@ function DiagnoseWorkspace() {
   const [patientAge, setPatientAge] = useState('30');
   const [patientGender, setPatientGender] = useState('Male');
   const [activeMeds, setActiveMeds] = useState('');
-  const [allergies, setAllergies] = useState('Aspirin');
+  const [allergies, setAllergies] = useState('');
   const [drugWarnings, setDrugWarnings] = useState<string[]>([]);
   const [preExisting, setPreExisting] = useState('');
   const [pregnancyStatus, setPregnancyStatus] = useState('No');

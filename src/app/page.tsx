@@ -203,6 +203,28 @@ export default function LandingPage() {
 
         </div>
       </div>
+      <div className="section" style={{ paddingTop: '0.75rem', borderTop: 'none' }}>
+        <div className="section-label">NHS Clinical Database Spotlight</div>
+        <div className="section-title">Reference Guidelines Library Sample</div>
+        <div className="section-sub">A sample of conditions in our grounding database sourced directly from official NHS guidelines.</div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '12px', marginTop: '1rem' }}>
+          {randomGuidelines.map((item, idx) => (
+            <div key={idx} style={{ border: '0.5px solid var(--color-border-tertiary)', borderRadius: 'var(--border-radius-lg)', padding: '1rem', background: 'var(--color-background-secondary)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                <span style={{ fontSize: '13px', fontWeight: 550, color: 'var(--color-text-primary)' }}>{item.condition}</span>
+                <span className="tag" style={{ background: 'var(--color-background-success)', color: 'var(--color-text-success)', borderColor: 'transparent' }}>{item.triageLevel}</span>
+              </div>
+              <p style={{ fontSize: '12px', color: 'var(--color-text-secondary)', lineHeight: '1.5', marginBottom: '8px' }}>{item.description}</p>
+              <div style={{ fontSize: '11px', color: 'var(--color-text-tertiary)' }}>
+                <strong>Indicators:</strong> {item.symptoms}
+              </div>
+              <div style={{ fontSize: '11px', color: 'var(--color-text-tertiary)', marginTop: '4px' }}>
+                <strong>Suggested Care:</strong> {item.suggestedMeds}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
 
       <div className="section">
         <div className="section-label">How it works</div>
@@ -329,27 +351,7 @@ export default function LandingPage() {
           </div>
         </div>
       </div>
-      <div className="section">
-        <div className="section-label">nhs clinical database spotlight</div>
-        <div className="section-title">scraped disease spotlight (random 3)</div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '12px', marginTop: '1rem' }}>
-          {randomGuidelines.map((item, idx) => (
-            <div key={idx} style={{ border: '0.5px solid var(--color-border-tertiary)', borderRadius: 'var(--border-radius-lg)', padding: '1rem', background: 'var(--color-background-secondary)' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                <span style={{ fontSize: '13px', fontWeight: 550, color: 'var(--color-text-primary)' }}>{item.condition}</span>
-                <span className="tag" style={{ background: 'var(--color-background-success)', color: 'var(--color-text-success)', borderColor: 'transparent' }}>{item.triageLevel}</span>
-              </div>
-              <p style={{ fontSize: '12px', color: 'var(--color-text-secondary)', lineHeight: '1.5', marginBottom: '8px' }}>{item.description}</p>
-              <div style={{ fontSize: '11px', color: 'var(--color-text-tertiary)' }}>
-                <strong>Indicators:</strong> {item.symptoms}
-              </div>
-              <div style={{ fontSize: '11px', color: 'var(--color-text-tertiary)', marginTop: '4px' }}>
-                <strong>Suggested Care:</strong> {item.suggestedMeds}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+
 
       <div className="cta-section">
         <div style={{ fontSize: '18px', fontWeight: 500, color: 'var(--color-text-primary)', marginBottom: '8px' }}>Try MedLens</div>

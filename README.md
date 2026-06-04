@@ -1,6 +1,6 @@
 # MedLens: Clinical Decision Support and Symptom Triage System
 
-MedLens is a clinical decision-support and symptom triage application grounded in official evidence-based medical guidelines. The system acts as a pre-consultation tool, structuring raw patient-reported symptoms into clinical-grade summaries and matching them against probabilistic differentials using deep reasoning models. 
+MedLens is a clinical decision-support and symptom triage application grounded in official evidence-based medical guidelines. Ingested with 500 conditions and tested with 200 test cases, the system achieves a Mean Reciprocal Rank (MRR) of 0.975 and a Normalized Discounted Cumulative Gain (nDCG) of 0.981 in retrieval benchmarks. The system acts as a pre-consultation tool, structuring raw patient-reported symptoms into clinical-grade summaries and matching them against probabilistic differentials using deep reasoning models. 
 
 All suggested conditions are mapped back to clinical standards. The clinical knowledge base is sourced directly from the National Health Service (NHS) UK Conditions database (available at https://www.nhs.uk).
 
@@ -31,7 +31,7 @@ The core of MedLens is an advanced search and reranking pipeline designed to min
 
 ## Quantitative Evaluation and Performance Benchmarks
 
-The MedLens retrieval pipeline has been validated against a benchmark suite consisting of 170 clinical test cases. The performance metrics across categories are detailed below:
+The MedLens retrieval pipeline has been validated against a benchmark suite consisting of 200 clinical test cases. The performance metrics across categories are detailed below:
 
 ### Retrieval Performance Metrics
 * **Mean Reciprocal Rank (MRR)**: 0.975

@@ -76,7 +76,7 @@ export default function DashboardPage() {
   const [weight, setWeight] = useState('');
   const [conditions, setConditions] = useState('');
   const [medications, setMedications] = useState('');
-  const [allergies, setAllergies] = useState('Aspirin');
+  const [allergies, setAllergies] = useState('');
   const [bloodType, setBloodType] = useState('O+');
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState('');
