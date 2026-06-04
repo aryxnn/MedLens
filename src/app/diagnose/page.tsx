@@ -32,13 +32,7 @@ function DiagnoseWorkspace() {
   const [activeCardIdx, setActiveCardIdx] = useState<number | null>(0);
   const [urgentAttention, setUrgentAttention] = useState<string | null>(null);
   const [profile, setProfile] = useState<any>(null);
-  const [followUps, setFollowUps] = useState<string[]>([
-    "what are migraine triggers I should avoid?",
-    "when should I go to A&E for a headache?",
-    "what prescription options exist for chronic migraine?",
-    "can I take sumatriptan with ibuprofen?"
-  ]);
-
+  const [symptomDuration, setSymptomDuration] = useState('1-2 Days');
   const [patientAge, setPatientAge] = useState('30');
   const [patientGender, setPatientGender] = useState('Male');
   const [activeMeds, setActiveMeds] = useState('');
@@ -93,7 +87,7 @@ function DiagnoseWorkspace() {
         body: JSON.stringify({
           symptoms: queryStr,
           associated_symptoms: '',
-          duration: '1-2 Days',
+          duration: symptomDuration,
           severity: 'Moderate',
           triggers: '',
           lifestyle: '',
@@ -142,9 +136,6 @@ function DiagnoseWorkspace() {
       setSources(parsedSources);
       setActiveCardIdx(0);
       setUrgentAttention(data.urgent_attention ? 'Emergency: Urgent medical evaluation is recommended based on symptom warning flags.' : null);
-      if (data.follow_ups && data.follow_ups.length > 0) {
-        setFollowUps(data.follow_ups);
-      }
       setStatusText(`retrieval complete · ${parsedResults.length} conditions ranked · ${parsedSources.length} sources retrieved`);
     } catch (err) {
       console.error(err);
@@ -189,20 +180,7 @@ function DiagnoseWorkspace() {
     }
   };
 
-  const handleFollowUpClick = (question: string) => {
-    const diagnosesSummary = results.map(r => `${r.condition} (${r.confidence}%)`).join(', ');
-    const contextPayload = `Workspace Triage Assessment Summary:
-Patient Symptoms: "${symptomsInput}"
-Suspected Conditions: ${diagnosesSummary || 'None matched'}
-Urgent Attention Flag: ${urgentAttention ? 'Yes' : 'No'}
-Patient Demographics: Age ${patientAge}, Gender ${patientGender}, Weight ${patientWeight || 'Not specified'} kg
-Pregnancy/Lactation Status: ${pregnancyStatus}
-Known Allergies: ${allergies || 'None listed'}
-Active Medications: ${activeMeds || 'None listed'}
-Pre-existing Conditions: ${preExisting || 'None listed'}`;
 
-    window.location.href = `/chat?q=${encodeURIComponent(question)}&context=${encodeURIComponent(contextPayload)}`;
-  };
 
   return (
     <div className="flex-1 flex flex-col pt-4">
@@ -292,6 +270,19 @@ Pre-existing Conditions: ${preExisting || 'None listed'}`;
                     onChange={(e) => setPatientWeight(e.target.value)}
                     placeholder="e.g. 70"
                   />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: '11px', color: 'var(--color-text-secondary)', marginBottom: '4px', textTransform: 'uppercase' }}>Symptom Duration</label>
+                  <select
+                    style={{ width: '100%', background: 'var(--color-background-primary)', border: '0.5px solid var(--color-border-secondary)', borderRadius: 'var(--border-radius-md)', padding: '6px 10px', fontSize: '13px', color: '#fff' }}
+                    value={symptomDuration}
+                    onChange={(e) => setSymptomDuration(e.target.value)}
+                  >
+                    <option value="Less than 24 hours">Less than 24 hours</option>
+                    <option value="1-2 Days">1-2 Days</option>
+                    <option value="3-5 Days">3-5 Days</option>
+                    <option value="Over a week">Over a week</option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -472,24 +463,11 @@ Pre-existing Conditions: ${preExisting || 'None listed'}`;
             )}
           </AnimatePresence>
 
-          <div className="panel">
-            <div className="panel-header">
-              <div className="panel-title">follow-up questions</div>
-            </div>
-            <div className="panel-body">
-              <div className="follow-up-list">
-                {followUps.map((q, qIdx) => (
-                  <button key={qIdx} className="follow-up-btn" onClick={() => handleFollowUpClick(q)}>
-                    {q}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
+
 
           <div style={{ padding: '10px', border: '0.5px solid var(--color-border-tertiary)', borderRadius: 'var(--border-radius-md)' }}>
-            <div style={{ fontSize: '10px', color: 'var(--color-text-tertiary)', lineHeight: '1.55' }}>
-              🛡️ this is not a medical diagnosis. results are based on retrieval from NHS clinical guidelines. always consult a qualified healthcare professional.
+            <div style={{ fontSize: '14px', color: 'var(--color-text-tertiary)', lineHeight: '1.55' }}>
+              🛡️ This is not a medical diagnosis. results are based on retrieval from NHS clinical guidelines. always consult a qualified healthcare professional.
             </div>
           </div>
         </div>

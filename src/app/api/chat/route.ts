@@ -26,64 +26,70 @@ const AgentStateAnnotation = Annotation.Root({
 
 type AgentStateType = typeof AgentStateAnnotation.State;
 
-function getLlmConfig() {
+function getLlmConfigs() {
+  const configs: any[] = [];
   const geminiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
   const groqKey = process.env.GROQ_API_KEY;
 
   if (geminiKey && geminiKey !== 'your_gemini_api_key' && geminiKey !== 'your_google_api_key') {
-    return {
-      provider: 'gemini' as const,
+    configs.push({
+      provider: 'gemini',
       apiKey: geminiKey,
       baseUrl: 'https://generativelanguage.googleapis.com/v1beta/openai',
       model: 'gemini-2.5-flash'
-    };
-  } else if (groqKey && groqKey !== 'your_groq_api_key') {
-    return {
-      provider: 'groq' as const,
+    });
+  }
+  if (groqKey && groqKey !== 'your_groq_api_key') {
+    configs.push({
+      provider: 'groq',
       apiKey: groqKey,
       baseUrl: 'https://api.groq.com/openai/v1',
       model: 'llama-3.3-70b-versatile'
-    };
+    });
   }
-  
-  return {
-    provider: 'fallback' as const,
-    apiKey: '',
-    baseUrl: '',
-    model: 'rule-based'
-  };
+  return configs;
 }
 
 async function callLlm(systemPrompt: string, userPrompt: string): Promise<string> {
-  const config = getLlmConfig();
-  if (config.provider === 'fallback') {
+  const configs = getLlmConfigs();
+  if (configs.length === 0) {
     throw new Error('No LLM credentials found');
   }
 
-  const response = await fetch(`${config.baseUrl}/chat/completions`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${config.apiKey}`
-    },
-    body: JSON.stringify({
-      model: config.model,
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: userPrompt }
-      ],
-      temperature: 0.1,
-      response_format: { type: 'json_object' }
-    })
-  });
+  let lastError: any = null;
+  for (const config of configs) {
+    try {
+      const response = await fetch(`${config.baseUrl}/chat/completions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${config.apiKey}`
+        },
+        body: JSON.stringify({
+          model: config.model,
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: userPrompt }
+          ],
+          temperature: 0.1,
+          response_format: { type: 'json_object' }
+        })
+      });
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`LLM Error (${config.provider}): ${errorText}`);
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`LLM Error (${config.provider}): ${errorText}`);
+      }
+
+      const json = await response.json();
+      return json.choices[0].message.content;
+    } catch (err: any) {
+      console.warn(`Provider ${config.provider} failed: ${err.message}. Trying next provider...`);
+      lastError = err;
+    }
   }
 
-  const json = await response.json();
-  return json.choices[0].message.content;
+  throw new Error(`All LLM providers failed. Last error: ${lastError?.message}`);
 }
 
 const intakeNode = async (state: AgentStateType) => {
@@ -96,9 +102,9 @@ const intakeNode = async (state: AgentStateType) => {
 };
 
 const reasoningNode = async (state: AgentStateType) => {
-  const config = getLlmConfig();
+  const configs = getLlmConfigs();
   
-  if (config.provider === 'fallback') {
+  if (configs.length === 0) {
     const diagnosis: { condition: string; reason: string; treatment: string; medications: string[] }[] = [];
     let triageLevel = 'Self-Care';
     let urgentAttention = false;

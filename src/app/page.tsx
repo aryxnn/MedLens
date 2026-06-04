@@ -34,7 +34,6 @@ function AnimatedCounter({ value, duration = 1.2, isDecimal = false, suffix = ""
 
 export default function LandingPage() {
   const [demoInput, setDemoInput] = useState('');
-  const [showDemoResults, setShowDemoResults] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [randomGuidelines, setRandomGuidelines] = useState<any[]>([]);
 
@@ -99,9 +98,6 @@ export default function LandingPage() {
       } else {
         clearInterval(timer);
         setIsTyping(false);
-        setTimeout(() => {
-          setShowDemoResults(true);
-        }, 300);
       }
     }, 30);
 
@@ -204,87 +200,7 @@ export default function LandingPage() {
             </Link>
           </div>
 
-          {showDemoResults && (
-            <motion.div
-              className="diag-cards"
-              initial="hidden"
-              animate="visible"
-              variants={{
-                visible: {
-                  transition: {
-                    staggerChildren: 0.1
-                  }
-                }
-              }}
-            >
-              <motion.div
-                className="diag-card"
-                style={{ borderColor: 'rgba(0, 180, 216, 0.3)' }}
-                variants={{
-                  hidden: { opacity: 0, y: 8 },
-                  visible: { opacity: 1, y: 0 }
-                }}
-              >
-                <div className="diag-top">
-                  <div className="diag-name">Migraine</div>
-                  <div className="diag-pct">94%</div>
-                </div>
-                <div className="bar-bg">
-                  <motion.div
-                    className="bar-fill"
-                    initial={{ width: 0 }}
-                    animate={{ width: "94%" }}
-                    transition={{ duration: 0.8, ease: "easeOut" }}
-                  ></motion.div>
-                </div>
-                <div className="diag-meta">source: migraine.md · section: symptoms · cross-encoder: 5.41</div>
-              </motion.div>
 
-              <motion.div
-                className="diag-card"
-                variants={{
-                  hidden: { opacity: 0, y: 8 },
-                  visible: { opacity: 1, y: 0 }
-                }}
-              >
-                <div className="diag-top">
-                  <div className="diag-name">Tension Headache</div>
-                  <div className="diag-pct">61%</div>
-                </div>
-                <div className="bar-bg">
-                  <motion.div
-                    className="bar-fill"
-                    initial={{ width: 0 }}
-                    animate={{ width: "61%" }}
-                    transition={{ duration: 0.8, ease: "easeOut" }}
-                  ></motion.div>
-                </div>
-                <div className="diag-meta">source: headache.md · section: types of headache</div>
-              </motion.div>
-
-              <motion.div
-                className="diag-card"
-                variants={{
-                  hidden: { opacity: 0, y: 8 },
-                  visible: { opacity: 1, y: 0 }
-                }}
-              >
-                <div className="diag-top">
-                  <div className="diag-name">Cluster Headache</div>
-                  <div className="diag-pct">38%</div>
-                </div>
-                <div className="bar-bg">
-                  <motion.div
-                    className="bar-fill"
-                    initial={{ width: 0 }}
-                    animate={{ width: "38%" }}
-                    transition={{ duration: 0.8, ease: "easeOut" }}
-                  ></motion.div>
-                </div>
-                <div className="diag-meta">source: headache.md · section: when to see a GP</div>
-              </motion.div>
-            </motion.div>
-          )}
         </div>
       </div>
 
