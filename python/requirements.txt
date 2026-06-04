@@ -1,0 +1,14 @@
+chromadb>=0.4.0
+litellm>=1.0.0
+pydantic>=2.0.0
+tqdm
+tenacity
+gradio
+pandas
+python-dotenv
+requests
+sentence-transformers
+rank-bm25
+fastapi
+uvicorn
+psutil
