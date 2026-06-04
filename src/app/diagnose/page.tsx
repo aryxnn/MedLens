@@ -44,6 +44,9 @@ function DiagnoseWorkspace() {
   const [activeMeds, setActiveMeds] = useState('');
   const [allergies, setAllergies] = useState('');
   const [drugWarnings, setDrugWarnings] = useState<string[]>([]);
+  const [preExisting, setPreExisting] = useState('');
+  const [pregnancyStatus, setPregnancyStatus] = useState('No');
+  const [patientWeight, setPatientWeight] = useState('');
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -94,7 +97,7 @@ function DiagnoseWorkspace() {
           severity: 'Moderate',
           triggers: '',
           lifestyle: '',
-          context: '',
+          context: `Pre-existing conditions: ${preExisting || 'None'}. Pregnancy/Lactation: ${pregnancyStatus}. Weight: ${patientWeight || 'Not specified'} kg.`,
           profile: {
             allergies: allergies.split(',').map(x => x.trim()).filter(Boolean),
             active_medications: activeMeds.split(',').map(x => x.trim()).filter(Boolean),
@@ -192,9 +195,11 @@ function DiagnoseWorkspace() {
 Patient Symptoms: "${symptomsInput}"
 Suspected Conditions: ${diagnosesSummary || 'None matched'}
 Urgent Attention Flag: ${urgentAttention ? 'Yes' : 'No'}
-Patient Demographics: Age ${patientAge}, Gender ${patientGender}
+Patient Demographics: Age ${patientAge}, Gender ${patientGender}, Weight ${patientWeight || 'Not specified'} kg
+Pregnancy/Lactation Status: ${pregnancyStatus}
 Known Allergies: ${allergies || 'None listed'}
-Active Medications: ${activeMeds || 'None listed'}`;
+Active Medications: ${activeMeds || 'None listed'}
+Pre-existing Conditions: ${preExisting || 'None listed'}`;
 
     window.location.href = `/chat?q=${encodeURIComponent(question)}&context=${encodeURIComponent(contextPayload)}`;
   };
@@ -253,6 +258,39 @@ Active Medications: ${activeMeds || 'None listed'}`;
                     value={allergies}
                     onChange={(e) => setAllergies(e.target.value)}
                     placeholder="e.g. penicillin"
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: '11px', color: 'var(--color-text-secondary)', marginBottom: '4px', textTransform: 'uppercase' }}>Pre-existing Conditions</label>
+                  <input
+                    type="text"
+                    style={{ width: '100%', background: 'var(--color-background-primary)', border: '0.5px solid var(--color-border-secondary)', borderRadius: 'var(--border-radius-md)', padding: '6px 10px', fontSize: '13px', color: '#fff' }}
+                    value={preExisting}
+                    onChange={(e) => setPreExisting(e.target.value)}
+                    placeholder="e.g. asthma, diabetes"
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: '11px', color: 'var(--color-text-secondary)', marginBottom: '4px', textTransform: 'uppercase' }}>Pregnancy/Lactation Status</label>
+                  <select
+                    style={{ width: '100%', background: 'var(--color-background-primary)', border: '0.5px solid var(--color-border-secondary)', borderRadius: 'var(--border-radius-md)', padding: '6px 10px', fontSize: '13px', color: '#fff' }}
+                    value={pregnancyStatus}
+                    onChange={(e) => setPregnancyStatus(e.target.value)}
+                  >
+                    <option value="No">No</option>
+                    <option value="Yes (Pregnant)">Yes (Pregnant)</option>
+                    <option value="Yes (Breastfeeding)">Yes (Breastfeeding)</option>
+                    <option value="Not Applicable">Not Applicable</option>
+                  </select>
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: '11px', color: 'var(--color-text-secondary)', marginBottom: '4px', textTransform: 'uppercase' }}>Weight (kg)</label>
+                  <input
+                    type="number"
+                    style={{ width: '100%', background: 'var(--color-background-primary)', border: '0.5px solid var(--color-border-secondary)', borderRadius: 'var(--border-radius-md)', padding: '6px 10px', fontSize: '13px', color: '#fff' }}
+                    value={patientWeight}
+                    onChange={(e) => setPatientWeight(e.target.value)}
+                    placeholder="e.g. 70"
                   />
                 </div>
               </div>
